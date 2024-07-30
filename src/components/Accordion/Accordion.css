@@ -8,6 +8,15 @@
   gap: 20px;
 }
 
+.wrapper button {
+  padding: 18px 22px;
+  font-weight: bolder;
+  background: #614101;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 8px;
+}
+
 .accordion {
   width: 500px;
 }

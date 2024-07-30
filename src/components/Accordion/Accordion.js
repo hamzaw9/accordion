@@ -4,6 +4,7 @@ import './Accordion.css';
 
 const Accordion = () => {
   const [selected, setSelected] = useState(null);
+  const [enableMultiSelection, setEnableMultiSelection] = useState(false);
 
   const handleSingleSelection = (currentid) => {
     setSelected(selected === currentid ? null : currentid);
@@ -11,6 +12,9 @@ const Accordion = () => {
 
   return (
     <div className="wrapper">
+      <button onClick={() => setEnableMultiSelection(!enableMultiSelection)}>
+        Enable Multi Selection
+      </button>
       <div className="accordion">
         {data && data.length ? (
           data.map((dataItem) => (
