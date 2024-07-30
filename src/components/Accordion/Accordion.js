@@ -5,21 +5,40 @@ import './Accordion.css';
 const Accordion = () => {
   const [selected, setSelected] = useState(null);
   const [enableMultiSelection, setEnableMultiSelection] = useState(false);
+  const [multiSelected, setMultiSelected] = useState([]);
 
   const handleSingleSelection = (currentid) => {
     setSelected(selected === currentid ? null : currentid);
   };
 
+  const handleMultiSelection = (currentid) => {
+    let cpyMultiSelected = [...multiSelected];
+    const findIndexOfCurrentId = cpyMultiSelected.indexOf(currentid);
+
+    if (findIndexOfCurrentId === -1) {
+      cpyMultiSelected.push(currentid);
+    } else {
+      cpyMultiSelected.splice(findIndexOfCurrentId, 1);
+    }
+    setMultiSelected(cpyMultiSelected);
+  };
+
   return (
     <div className="wrapper">
       <button onClick={() => setEnableMultiSelection(!enableMultiSelection)}>
-        Enable Multi Selection
+        {enableMultiSelection
+          ? 'Disable Multi Selection'
+          : 'Enable Multi Selection'}
       </button>
       <div className="accordion">
         {data && data.length ? (
           data.map((dataItem) => (
             <div
-              onClick={() => handleSingleSelection(dataItem.id)}
+              onClick={
+                enableMultiSelection
+                  ? () => handleMultiSelection(dataItem.id)
+                  : () => handleSingleSelection(dataItem.id)
+              }
               className="item"
               key={dataItem.id}
             >
@@ -27,9 +46,13 @@ const Accordion = () => {
                 <h3>{dataItem.title}</h3>
                 <span>+</span>
               </div>
-              {selected === dataItem.id ? (
-                <div className="content">{dataItem.content}</div>
-              ) : null}
+              {enableMultiSelection
+                ? multiSelected.indexOf(dataItem.id) !== -1 && (
+                    <div className="content">{dataItem.content}</div>
+                  )
+                : selected === dataItem.id && (
+                    <div className="content">{dataItem.content}</div>
+                  )}
             </div>
           ))
         ) : (
